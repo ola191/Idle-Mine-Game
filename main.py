@@ -6,7 +6,7 @@ from scenes.mainMenu import MainMenu
 pygame.init()
 
 width, height = 640, 480
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Idle Mine")
 
 font = pygame.font.Font(None, 36)

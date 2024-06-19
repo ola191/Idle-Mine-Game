@@ -7,7 +7,7 @@ class GameScene:
         self.screen = screen
         self.font = font
         self.worldData = worldData
-        self.resources = self.worldData.get('resources', 0)
+        self.resources = self.worldData['resources']
         self.running = True
 
     def run(self):

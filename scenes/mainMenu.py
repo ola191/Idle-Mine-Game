@@ -12,8 +12,8 @@ class MainMenu:
     def __init__(self, screen, font):
         self.screen = screen
         self.font = font
-        self.loadButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 - 60, 200, 50, "Load World", (255, 255, 255), font, self.loadWorld)
-        self.createButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 + 10, 200, 50, "Create World", (255, 255, 255), font, self.createWorld)
+        self.loadButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 - 40, 200, 50, "Load World", (255, 255, 255), font, self.loadWorld)
+        self.createButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 + 40, 200, 50, "Create World", (255, 255, 255), font, self.createWorld)
         self.currentScene = None
 
     def loadWorld(self):
@@ -21,6 +21,12 @@ class MainMenu:
 
     def createWorld(self):
         self.currentScene = CreateWorldScene(self.screen, self.font)
+    
+    def changeResolution(self):
+        self.screen = pygame.display.set_mode((self.screen.get_width(), self.screen.get_height()), pygame.RESIZABLE)
+        self.loadButton.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2 - 40)
+        self.createButton.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2 + 40)
+
 
     def run(self):
         while True:
@@ -28,6 +34,8 @@ class MainMenu:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.VIDEORESIZE:
+                    self.changeResolution()
                 self.loadButton.isClicked(event)
                 self.createButton.isClicked(event)
 
