@@ -29,8 +29,6 @@ class Button:
                 if self.action:
                     self.action()
 
-
-
 def loadWorld():
     global currentScene
     currentScene = gameScene
@@ -43,19 +41,17 @@ loadButton = Button(width // 2 - 100, height // 2- 60, 200, 50, "Load World", (2
 createButton = Button(width // 2 - 100, height // 2+ 10, 200, 50, "Create World", (255,255,255), font, createWorld)
 
 def mainMenu():
-    running = True
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            loadButton.isClicked(event)
-            createButton.isClicked(event)
-        
-        screen.fill((255, 255, 255))
-        loadButton.draw(screen)
-        createButton.draw(screen)
-        pygame.display.flip()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        loadButton.isClicked(event)
+        createButton.isClicked(event)
+    
+    screen.fill((255, 255, 255))
+    loadButton.draw(screen)
+    createButton.draw(screen)
+    pygame.display.flip()
 
 def gameScene():
     resources = 0
