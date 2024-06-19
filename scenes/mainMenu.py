@@ -1,7 +1,12 @@
 import pygame
 import sys
+import os 
+
+from scenes.createWorldScene import CreateWorldScene
+from scenes.loadWorldScene import LoadWorldScene
 from ui.button import Button
 from scenes.gameScene import GameScene
+
 
 class MainMenu:
     def __init__(self, screen, font):
@@ -12,10 +17,10 @@ class MainMenu:
         self.currentScene = None
 
     def loadWorld(self):
-        self.currentScene = GameScene(self.screen, self.font)
+        self.currentScene = LoadWorldScene(self.screen, self.font)
 
     def createWorld(self):
-        self.currentScene = GameScene(self.screen, self.font)
+        self.currentScene = CreateWorldScene(self.screen, self.font)
 
     def run(self):
         while True:
