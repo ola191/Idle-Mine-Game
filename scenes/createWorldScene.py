@@ -1,5 +1,6 @@
 import pygame
 
+import time
 import sys
 import os
 import json
@@ -25,11 +26,12 @@ class CreateWorldScene:
         if worldName.strip() == "":
             return
         
+        startTime = time.time()
         seed = random.seed(random.randint(0, 100000))
 
-        shape = (20,20)
-        scale = 10.0
-        octaves = 6 
+        shape = (100,100)
+        scale = 20.0
+        octaves = 4
 
         noise = PerlinNoise(octaves=octaves, seed=seed)
 
@@ -41,9 +43,9 @@ class CreateWorldScene:
                 scaledValue = numpy.interp(noiseValue, (-1,1), (1,6))
                 mapData[i][j] = int(round(scaledValue))
 
-        print(f"{mapData}")
+        print(f"generating map : {time.time() - startTime}")
         
-        map = noise
+        startTime = time.time()
         worldData = {
             "name": worldName,
             "resources" : 0,
@@ -53,6 +55,8 @@ class CreateWorldScene:
         filepath = os.path.join("worlds", f"{worldName}.json")
         with open(filepath, 'w') as f:
             json.dump(worldData, f)
+        
+        print(f"saving world : {time.time() - startTime}")
         
         self.currentScene = GameScene(self.screen, self.font, worldData)
 
