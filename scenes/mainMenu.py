@@ -12,8 +12,8 @@ class MainMenu:
     def __init__(self, screen, font):
         self.screen = screen
         self.font = font
-        self.loadButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 - 40, 200, 50, "Load World", (255, 255, 255), font, self.loadWorld)
-        self.createButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 + 40, 200, 50, "Create World", (255, 255, 255), font, self.createWorld)
+        self.loadButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 - 40, 200, 50, "Load World", (255, 255, 255), font, self.loadWorld, "./assets/textures/ui/button.png", (0,0,0))
+        self.createButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 + 40, 200, 50, "Create World", (255, 255, 255), font, self.createWorld, "./assets/textures/ui/button.png", (0,0,0))
         self.currentScene = None
 
     def loadWorld(self):
@@ -26,6 +26,8 @@ class MainMenu:
         self.screen = pygame.display.set_mode((self.screen.get_width(), self.screen.get_height()), pygame.RESIZABLE)
         self.loadButton.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2 - 40)
         self.createButton.rect.center = (self.screen.get_width() // 2, self.screen.get_height() // 2 + 40)
+        self.loadButton.textRect = self.loadButton.textSurface.get_rect(center=self.loadButton.rect.center)
+        self.createButton.textRect = self.createButton.textSurface.get_rect(center=self.createButton.rect.center)
 
 
     def run(self):
