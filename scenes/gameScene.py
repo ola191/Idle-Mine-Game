@@ -10,7 +10,7 @@ class GameScene:
         self.resources = self.worldData['resources']
         self.running = True
 
-    def run(self):
+    def run(self):  
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -24,3 +24,4 @@ class GameScene:
             self.screen.blit(textResources, (10, 60))
             pygame.display.flip()
             return self
+        
