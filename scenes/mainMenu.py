@@ -16,6 +16,10 @@ class MainMenu:
         self.createButton = Button(screen.get_width() // 2 - 100, screen.get_height() // 2 + 40, 200, 50, "Create World", (255, 255, 255), font, self.createWorld, "./assets/textures/ui/button.png", (0,0,0))
         self.currentScene = None
 
+        self.bgScale = 1
+        self.bgImage = pygame.image.load("./assets/textures/bg/mainMenu.png").convert_alpha()
+        self.bgImage = pygame.transform.scale(self.bgImage, (self.screen.get_width() * self.bgScale, self.screen.get_height() * self.bgScale))
+
     def loadWorld(self):
         self.currentScene = LoadWorldScene(self.screen, self.font)
 
@@ -29,7 +33,6 @@ class MainMenu:
         self.loadButton.textRect = self.loadButton.textSurface.get_rect(center=self.loadButton.rect.center)
         self.createButton.textRect = self.createButton.textSurface.get_rect(center=self.createButton.rect.center)
 
-
     def run(self):
         while True:
             for event in pygame.event.get():
@@ -41,7 +44,8 @@ class MainMenu:
                 self.loadButton.isClicked(event)
                 self.createButton.isClicked(event)
 
-            self.screen.fill((255, 255, 255))
+            self.bgImage = pygame.transform.scale(self.bgImage, (self.screen.get_width() * self.bgScale, self.screen.get_height() * self.bgScale))
+            self.screen.blit(self.bgImage, (0, 0))
             self.loadButton.draw(self.screen)
             self.createButton.draw(self.screen)
             pygame.display.flip()

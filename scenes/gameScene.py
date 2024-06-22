@@ -43,9 +43,9 @@ class GameScene:
                     sys.exit()
                 
             self.screen.fill((255, 255, 255))
-            startTime = time.time()
+            # startTime = time.time()
             self.drawMap()
-            print(f"Drawing map : {time.time() - startTime}")
+            # print(f"Drawing map : {time.time() - startTime}")
             # text = self.font.render(f"World: {self.worldData['name']}", True, (0,0,0))
             # self.screen.blit(text, (10, 10))
             # textResources = self.font.render(f"Resources: {self.resources}", True, (0, 0, 0))
