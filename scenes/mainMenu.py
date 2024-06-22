@@ -33,6 +33,7 @@ class MainMenu:
         self.loadButton.textRect = self.loadButton.textSurface.get_rect(center=self.loadButton.rect.center)
         self.createButton.textRect = self.createButton.textSurface.get_rect(center=self.createButton.rect.center)
 
+
     def run(self):
         while True:
             for event in pygame.event.get():

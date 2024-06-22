@@ -3,6 +3,7 @@ import pygame
 import time
 import sys
 import os
+import ujson
 import json
 import random
 import numpy as np
@@ -31,29 +32,77 @@ class CreateWorldScene:
             return
         
         seed = random.randint(0, 100000)
+        random.seed(seed)
+        noise = PerlinNoise(octaves=4, seed=seed)
 
         startTime = time.time()
 
-        def initializeMap(width, height, fillProb=0.45):
-            return np.random.choice([0, 1], size=(width, height), p=[1-fillProb, fillProb])
+        def initializeMap(width, height, fillProb=0.45, airHeight=10):
+            mapData = np.ones((width, height), dtype=int)  # 1: blackStone
+
+            mapData[:airHeight, :] = 4  # 4: air
+
+            mapData[airHeight:, :] = np.random.choice([0, 1], size=(width - airHeight, height), p=[1-fillProb, fillProb])  # 0: stone, 1: blackStone
+            return mapData
 
         def smoothMap(mapData, iterations=5):
             for _ in range(iterations):
                 newMap = mapData.copy()
                 for x in range(1, mapData.shape[0] - 1):
                     for y in range(1, mapData.shape[1] - 1):
-                        wallCount = np.sum(mapData[x-1:x+2, y-1:y+2]) - mapData[x, y]
+                        wallCount = np.sum(mapData[x-1:x+2, y-1:y+2] == 1)  # Count only blackStone
                         if wallCount > 4:
-                            newMap[x, y] = 1
+                            newMap[x, y] = 1  # 1: blackStone
                         elif wallCount < 4:
-                            newMap[x, y] = 0
+                            newMap[x, y] = 0  # 0: stone
                 mapData = newMap
             return mapData
 
+        def addAirLayer(mapData, airHeight, grassLayer):
+            height, width = mapData.shape
+            for x in range(width):
+                grassLevel = grassLayer[x]
+                if grassLevel < height:  
+                    mapData[:grassLevel, x] = 4
+            return mapData
+
+        def addGrassLayer(mapData, airHeight, grassHeight, minGrassHeight=2):
+            height, width = mapData.shape
+            grassLayer = []
+
+            noise = PerlinNoise(octaves=4, seed=1)
+            
+            for x in range(width):
+                grassBaseHeight = airHeight + int((noise([x / width]) + 1) * grassHeight / 2)
+                highestGrassHeight = grassBaseHeight + grassHeight - 1 
+                
+                if x > 0:
+                    prevGrassHeight = grassLayer[-1]
+                    if highestGrassHeight > prevGrassHeight + 1:
+                        highestGrassHeight = prevGrassHeight + 1
+                    elif highestGrassHeight < prevGrassHeight - 1:
+                        highestGrassHeight = prevGrassHeight - 1
+
+                if highestGrassHeight < minGrassHeight:
+                    highestGrassHeight = minGrassHeight
+
+                mapData[highestGrassHeight, x] = 2  # 2: grass
+                grassLayer.append(highestGrassHeight)
+
+            return [mapData, grassLayer]
+
         def makeNoise():
             width, height = 200, 200
-            mapData = initializeMap(width, height)
+            airHeight = 50
+            grassHeight = 10  
+            minGrassHeight = 3 
+            
+            mapData = initializeMap(width, height, airHeight=airHeight)
             mapData = smoothMap(mapData)
+            response = addGrassLayer(mapData, airHeight, grassHeight, minGrassHeight=minGrassHeight)
+            mapData = response[0]
+            grassLayer = response[1]
+            mapData = addAirLayer(mapData, airHeight, grassLayer)
             return mapData
 
         mapData = makeNoise()

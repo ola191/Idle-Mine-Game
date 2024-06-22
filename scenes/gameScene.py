@@ -20,12 +20,13 @@ class GameScene:
         self.tileSize = min(self.screenWidth // self.mapWidth, self.screenHeight // self.mapHeight)
 
         self.colorMap = {
-            1: (140, 70, 20),  # Dirt
-            2: (100, 100, 100),# blackStone
-            3: (130, 130, 130),# Stone
-            4: (200, 255, 200),# Andezit
-            5: (0, 0, 255),    # Water
-            6: (210, 210, 210) # Gravel
+            0: (170, 170, 170), # stone
+            1: (140, 130, 130),  # blackSstone
+            2: (160, 200, 150),# grass
+            3: (255, 255, 0),# Stone
+            4: (170, 225, 225),# air
+            5: (255, 0, 255), # Water
+            6: (210, 255, 210) # Gravel
         }
 
     def drawMap(self):
